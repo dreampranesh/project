@@ -1,0 +1,29 @@
+provider "aws" {
+  region = "ap-south-1"  # Set your desired AWS region
+}
+
+variable "instance_tags" {
+  default = {
+    "instance1" = {
+      "Name" = "Instance1",
+      "Role" = "WebServer",
+    },
+    "instance2" = {
+      "Name" = "Instance2",
+      "Role" = "DatabaseServer",
+    },
+    "instance3" = {
+      "Name" = "Instance3",
+      "Role" = "AppServer",
+    },
+  }
+}
+
+resource "aws_instance" "example" {
+  for_each = var.instance_tags
+
+  ami           = "ami-xxxxxxxxxxxxxxxxx"  # Replace with your desired AMI ID
+  instance_type = "t2.micro"  # Set your desired instance type
+
+  tags = each.value
+}
